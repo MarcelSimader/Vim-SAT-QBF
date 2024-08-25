@@ -36,6 +36,7 @@ SAT/QBF proof related:
 News
 ------------------------------------------------------------------------------------------
 
+- `v.2.0`, Added syntax support for LRAT
 - `v.1.0`, Initial release
 
 ### Old News

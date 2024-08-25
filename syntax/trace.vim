@@ -16,34 +16,64 @@ syntax keyword TraceKeywords         s v V d
 syntax match   TraceComment          /^\s*c.*$/
 
 " ~~~~~~~~~~ Clause lines
-syntax match   TraceLiteral          /-\?\d\+/
+syntax match   TraceLiteral          /\<-\?\d\+\>/
             \ contains=TraceZero
-syntax keyword TraceZero             0
+syntax match   TraceIdentifier       /\<-\@<!\d\+\>/
+            \ contained
+syntax match   TraceZero             /\<0\>/
             \ contained
 
 " ~~~~~~~~~~ Trace lines
 syntax match  TraceSolutionSpecifier /^\s*s\s\+.*$/
             \ transparent contains=TraceKeywords,TraceSolutionType
-syntax match  TraceSolutionType      /\w\+/
+syntax match  TraceSolutionType      /\<\w\+\>/
             \ contained
 syntax match  TraceSolutionLine      /^\s*[vV]\s\+.*$/
             \ transparent contains=TraceKeywords,TraceLiteral
-syntax match  TraceDeletionLine      /^\s*d\s\+.*$/
-            \ contains=TraceKeywords,TraceLiteral
+
+" ~~~~~~~~~~ RUP/RAT lines
+syntax match  RUPDeletionLine        /^\s*d\s\+.*$/
+            \ transparent contains=TraceKeywords,TraceLiteral
+
+" ~~~~~~~~~~ LRAT lines
+syntax match LRATDeletionLine
+            \ /^\s*\d\+\s\+d\s\+\(\d\+\s\+\)*0\s*$/
+            \ contains=LRATPrefix,TraceKeywords,TraceZero
+syntax match LRATAdditionLine
+            \ /^\s*\d\+\s\+\(-\?\d\+\s\+\)*0\s\+\(\d\+\s\+\)*\(-\d\+\s\+\(\d\+\s\+\)*\)*0\s*$/
+            \ transparent
+            \ contains=LRATPrefix,TraceIdentifier,TraceZero
+syntax match LRATPrefix              /^\s*\d\+/
+            \ contained contains=TraceIdentifier
+            \ nextgroup=LRATClause
+syntax match LRATClause              /\s\+\(-\?\d\+\s\+\)\{-}0/
+            \ contained contains=TraceZero
+            \ nextgroup=LRATIdentifierList,LRATResolventList
+syntax match LRATIdentifierList      /\(\s\+\d\+\)\+/
+            \ contains=TraceZero
+            \ contained nextgroup=LRATResolventList
+syntax match LRATResolventList       /\s\+\(-\d\+\s\+\(\d\+\s\+\)\{-}\)*0/
+            \ contained contains=TraceZero
 
 " ~~~~~~~~~~~~~~~~~~~~ Highlight ~~~~~~~~~~~~~~~~~~~~
 
 " ~~~~~~~~~~ General
 highlight default link TraceKeywords      Keyword
 highlight default link TraceComment       Comment
+highlight default link TraceIdentifier    Identifier
 
 " ~~~~~~~~~~ Clause lines
 highlight default link TraceLiteral       Normal
 highlight default link TraceZero          SpecialChar
 
 " ~~~~~~~~~~ Trace lines
-highlight default link TraceSolutionType  Statement
-highlight default link TraceDeletionLine  Operator
+highlight default link TraceSolutionType  Special
+
+" ~~~~~~~~~~ LRAT lines
+highlight default link LRATDeletionLine   Statement
+highlight default link LRATClause         Normal
+highlight default link LRATIdentifierList Statement
+highlight default link LRATResolventList  Number
 
 let b:current_syntax = 'trace'
 
