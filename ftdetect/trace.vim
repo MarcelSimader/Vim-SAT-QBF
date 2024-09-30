@@ -7,5 +7,6 @@ augroup TraceFiletype
     autocmd VimEnter,BufNewFile,BufRead *.rup,*.drup set ft=trace
     autocmd VimEnter,BufNewFile,BufRead *.rat,*.drat,*.lrat,*.frat set ft=trace
     autocmd VimEnter,BufNewFile,BufRead *.proof,*.trace,*.out set ft=trace
+    autocmd VimEnter,BufNewFile,BufRead *.ferp,*.ferat set ft=trace
 augroup END
 

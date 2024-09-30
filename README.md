@@ -32,12 +32,16 @@ SAT/QBF proof related:
     - Extensions: `.rat`, `.drat`, `.rup`, `.drup`, `.lrat`, `.frat`,
         `.proof`, `.trace`, `.out`
     - Header: N/A
+- `FERP` and `FERAT`
+    - Extensions: `.ferp`, `.ferat`
+    - Header: N/A
 
 News
 ------------------------------------------------------------------------------------------
 
-- `v.2.0`, Added syntax support for LRAT
-- `v.1.0`, Initial release
+- `v0.3.0`, Added syntax support for FERP/FERAT
+- `v0.2.0`, Added syntax support for LRAT
+- `v0.1.0`, Initial release
 
 ### Old News
 

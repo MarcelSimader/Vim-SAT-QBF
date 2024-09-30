@@ -11,69 +11,82 @@ endif
 " ~~~~~~~~~~~~~~~~~~~~ Syntax ~~~~~~~~~~~~~~~~~~~~
 
 " ~~~~~~~~~~ General
-syntax keyword TraceKeywords         s v V d
+syntax keyword TraceKeywords          s v V d x o e
             \ contained
-syntax match   TraceComment          /^\s*c.*$/
+syntax match   TraceComment           /^\s*c.*$/
 
 " ~~~~~~~~~~ Clause lines
-syntax match   TraceLiteral          /\<-\?\d\+\>/
+syntax match   TraceLiteral           /\<-\?\d\+\>/
             \ contains=TraceZero
-syntax match   TraceIdentifier       /\<-\@<!\d\+\>/
+syntax match   TraceIdentifier        /\<-\@<!\d\+\>/
             \ contained
-syntax match   TraceZero             /\<0\>/
+syntax match   TraceZero              /\<0\>/
             \ contained
 
 " ~~~~~~~~~~ Trace lines
-syntax match  TraceSolutionSpecifier /^\s*s\s\+.*$/
+syntax match   TraceSolutionSpecifier /^\s*s\s\+.*$/
             \ transparent contains=TraceKeywords,TraceSolutionType
-syntax match  TraceSolutionType      /\<\w\+\>/
+syntax match   TraceSolutionType      /\<\w\+\>/
             \ contained
-syntax match  TraceSolutionLine      /^\s*[vV]\s\+.*$/
+syntax match   TraceSolutionLine      /^\s*[vV]\s\+.*$/
             \ transparent contains=TraceKeywords,TraceLiteral
 
 " ~~~~~~~~~~ RUP/RAT lines
-syntax match  RUPDeletionLine        /^\s*d\s\+.*$/
+syntax match   RUPDeletionLine        /^\s*d\s\+.*$/
             \ transparent contains=TraceKeywords,TraceLiteral
 
 " ~~~~~~~~~~ LRAT lines
-syntax match LRATDeletionLine
+syntax match   LRATDeletionLine
             \ /^\s*\d\+\s\+d\s\+\(\d\+\s\+\)*0\s*$/
             \ contains=LRATPrefix,TraceKeywords,TraceZero
-syntax match LRATAdditionLine
+syntax match   LRATAdditionLine
             \ /^\s*\d\+\s\+\(-\?\d\+\s\+\)*0\s\+\(\d\+\s\+\)*\(-\d\+\s\+\(\d\+\s\+\)*\)*0\s*$/
             \ transparent
             \ contains=LRATPrefix,TraceIdentifier,TraceZero
-syntax match LRATPrefix              /^\s*\d\+/
+syntax match   LRATPrefix             /^\s*\d\+/
             \ contained contains=TraceIdentifier
             \ nextgroup=LRATClause
-syntax match LRATClause              /\s\+\(-\?\d\+\s\+\)\{-}0/
+syntax match   LRATClause             /\s\+\(-\?\d\+\s\+\)\{-}0/
             \ contained contains=TraceZero
             \ nextgroup=LRATIdentifierList,LRATResolventList
-syntax match LRATIdentifierList      /\(\s\+\d\+\)\+/
+syntax match   LRATIdentifierList     /\(\s\+\d\+\)\+/
             \ contains=TraceZero
             \ contained nextgroup=LRATResolventList
-syntax match LRATResolventList       /\s\+\(-\d\+\s\+\(\d\+\s\+\)\{-}\)*0/
+syntax match   LRATResolventList      /\s\+\(-\d\+\s\+\(\d\+\s\+\)\{-}\)*0/
             \ contained contains=TraceZero
+
+" ~~~~~~~~~~ FERP/FERAT lines
+syntax match   FERPVariableMappingLine
+            \ /^\s*x\s\+\(\d\+\s\+\)\{1,}0\s\+\(\d\+\s\+\)\{1,}0\s\+\(-\?\d\+\s\+\)*0\s*$/
+            \ contains=TraceKeywords,TraceZero
+syntax match   FERPClauseMappingLine  /^\s*o\s\+\(\d\+\s\+\)*0\s*$/
+            \ contains=TraceKeywords,TraceZero
+syntax match   FERATExpansionLine     /^\s*e\s\+\(-\?\d\+\s\+\)*0\s*$/
+            \ contains=TraceKeywords,TraceZero
 
 " ~~~~~~~~~~~~~~~~~~~~ Highlight ~~~~~~~~~~~~~~~~~~~~
 
 " ~~~~~~~~~~ General
-highlight default link TraceKeywords      Keyword
-highlight default link TraceComment       Comment
-highlight default link TraceIdentifier    Identifier
+highlight default link TraceKeywords           Keyword
+highlight default link TraceComment            Comment
+highlight default link TraceIdentifier         Identifier
 
 " ~~~~~~~~~~ Clause lines
-highlight default link TraceLiteral       Normal
-highlight default link TraceZero          SpecialChar
+highlight default link TraceLiteral            Normal
+highlight default link TraceZero               SpecialChar
 
 " ~~~~~~~~~~ Trace lines
-highlight default link TraceSolutionType  Special
+highlight default link TraceSolutionType       Special
 
 " ~~~~~~~~~~ LRAT lines
-highlight default link LRATDeletionLine   Statement
-highlight default link LRATClause         Normal
-highlight default link LRATIdentifierList Statement
-highlight default link LRATResolventList  Number
+highlight default link LRATDeletionLine        Statement
+highlight default link LRATClause              Normal
+highlight default link LRATIdentifierList      Statement
+highlight default link LRATResolventList       Number
+
+" ~~~~~~~~~~ FERP/FERAT lines
+highlight default link FERPVariableMappingLine Constant
+highlight default link FERPClauseMappingLine   Float
 
 let b:current_syntax = 'trace'
 
